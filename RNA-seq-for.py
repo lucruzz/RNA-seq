@@ -1,4 +1,3 @@
-#Script da Micaella, disponível em: https://github.com/Micaella/RNA-seq
 #!/usr/bin/env python
 import sys
 import os
