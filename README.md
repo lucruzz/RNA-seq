@@ -24,7 +24,7 @@ HTSeq is a native Python library that folows conventions of many Python packages
 HTSeq uses [NumPy](https://numpy.org/), [Pysam](https://github.com/pysam-developers/pysam) and [matplotlib](https://matplotlib.org/). Be sure this tools are installed.
 
 - [R](https://www.r-project.org/)
-/mm
+
 To use [DESEq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) script make sure R language is also installed. You can install it by running:
 
 
