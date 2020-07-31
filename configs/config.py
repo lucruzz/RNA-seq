@@ -9,7 +9,7 @@ config = Config(
 	data_management_max_threads=10,
 	executors=[
 		ThreadPoolExecutor(
-			label='THREADS',
+			label='threads',
 			managed=True,
 			max_threads=12,
 			storage_access=None,
@@ -18,11 +18,10 @@ config = Config(
 		)
 	],
 	initialize_logging=True,
-	lazy_errors=True,
 	max_idletime=120.0,
 	monitoring=None,
 	retries=0,
-	run_dir='RUNINFO',
+	run_dir='runinfo',
 	strategy='simple',
 	usage_tracking=False
 )
