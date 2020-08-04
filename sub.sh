@@ -17,12 +17,14 @@ module load R/3.5.2_openmpi_2.0_gnu
 dir=$(pwd)
 cd $dir
 
+#Permissão para acessar o script DESeq.R
+chmod a+x $dir/DESeq.R
 
-EXEC=$dir/rna-seq.py
+SCRIPT=$dir/rna-seq.py
 DIR_BASE_GENOMICA=$dir/mm9/mm9
 DIR_INPUTS=$dir/inputs/SRR
 DIR_OUTPUTS=$dir/outputs/
 GTF=$dir/Mus_musculus.NCBIM37.67.gtf
 DESEQ=$dir/DESeq.R
 
-time python3 $EXEC $DIR_BASE_GENOMICA $DIR_INPUTS $DIR_OUTPUTS $GTF $DESEQ
+time python3 $SCRIPT $DIR_BASE_GENOMICA $DIR_INPUTS $DIR_OUTPUTS $GTF $DESEQ
