@@ -25,9 +25,10 @@ def DEseq(dseq2, saida, stdout=None):
     return '{0} {1}'.format(dseq2, saida)
 
 # PARÂMETROS DA ATIVIDADE BOWTIE
-base_bowtie = sys.argv[1]       # Caminho da base genômica
-inputs_bowtie = sys.argv[2]     # Caminho do diretório dos arquivos de entrada (fastaq)
-saida = sys.argv[3]             # Caminho do diretório de saída onde todos os arquivos gerados por cada atividade do workflow serão inseridos
+base_bowtie = sys.argv[1]           # Caminho da base genômica
+multithread_bowtie = sys.argv[2]    # Parâmetro multithread da atividade bowtie
+inputs_bowtie = sys.argv[3]         # Caminho do diretório dos arquivos de entrada (fastaq)
+saida = sys.argv[4]                 # Caminho do diretório de saída onde todos os arquivos gerados por cada atividade do workflow serão inseridos
 
 # "VERIFICAÇÃO" DOS ARQUIVOS DE ENTRADA
 p = Path(inputs_bowtie).parent                  # ("./a/b/c").parent -> (".a/b")
@@ -40,7 +41,7 @@ output = Path(saida) # todos os arquivos gerados pelo workflow serão inseridos 
 for i in fasta:
     prefix = Path(i).stem # pega o componente final do caminho do arquivo sem o sufixo. Ex.: ("inputs/SRR597499.fastaq.gz").stem -> ("SRR597499.fastaq")
     saida_bowtie = os.path.join(output, prefix+'.sam') # parâmetro da atividade bowtie para indicar onde o arquivo de saída deve ser gerado e que nome ele deve ter
-    bow = bowtie(1, Path(base_bowtie).resolve(), i, stdout=saida_bowtie) # chama a atividade bowtie
+    bow = bowtie(multithread_bowtie, Path(base_bowtie).resolve(), i, stdout=saida_bowtie) # chama a atividade bowtie
 
 bow.result() # Impede que a execução do workflow prossiga sem que as tarefas sejam finalizadas
 
