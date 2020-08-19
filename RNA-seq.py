@@ -46,7 +46,7 @@ for i in fasta:
 bow.result() # Impede que a execução do workflow prossiga sem que as tarefas sejam finalizadas
 
 # PARÂMETROS DA ATIVIDADE HTSEQ
-gtf= sys.argv[4] # arquivo GTF
+gtf= sys.argv[5] # arquivo GTF
 saida = [] # lista para "abrigar todas as execuções" do HTSeq
 
 sam = list(output.glob('*.sam')) # cria uma lista com todos os arquivos gerados pela atividade bowtie
@@ -69,7 +69,7 @@ wait_results = [i.result() for i in saida] # Impede que o workflow prossiga sua 
 # grep_results = [j.results for j in lista_exe]
 
 # PARÂMETRO DA ATIVIDADE DESEQ
-exc_dseq2= sys.argv[5] # caminho do script DESeq
+exc_dseq2= sys.argv[6] # caminho do script DESeq
 
 saida_DEseq = os.path.join(output, 'teste.deseq') # parâmetro da atividade DESeq para indicar onde o arquivo de saída deve ser gerado e que nome ele deve ter
 teste = DEseq(Path(exc_dseq2).resolve(), output, stdout=saida_DEseq) # chamada da atividade DEseq
