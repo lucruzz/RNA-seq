@@ -32,7 +32,7 @@ To use [DESEq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
 
 - [Parsl - Parallel Scripting Library](https://parsl.readthedocs.io/en/stable/index.html)
 
-The recommended way to install Parsl is the suggest approach from Parsl's documantion:
+The recommended way to install Parsl is the suggest approach from Parsl's documentation:
 
 
 > python3 -m pip install parsl
