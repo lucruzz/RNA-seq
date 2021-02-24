@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys, os, parsl
 from parsl import load, python_app, bash_app
-from configs.config import config
+from configs.config_HTEx import config
 from parsl.data_provider.files import File
 from pathlib import Path
 
