@@ -23,7 +23,6 @@ config = Config(
                 nodes_per_block=1,
                 walltime='48:00:00',
                 partition='mesca2',
-                # script to the scheduler eg: '#SBATCH --constraint=knl,quad,cache'
                 scheduler_options='#SBATCH --cpus-per-task=240',
 
                 init_blocks=1,
