@@ -13,27 +13,6 @@ the login node.
 """
 config = Config(
     executors=[
-#        HighThroughputExecutor(
-#            label="sdumont_htex_cpu_dev_24w",
-#            address=address_by_hostname(),
-#            #address=address_by_interface('ib0'),
-#            max_workers=24,          # Set number of workers per node
-#            provider=SlurmProvider(
-#                cmd_timeout=120,     # Add extra time for slow scheduler responses
-#                nodes_per_block=4,
-#                walltime='00:20:00',
-#                partition='cpu_dev',
-#
-#                init_blocks=1,
-#                min_blocks=1,
-#                max_blocks=1,
-#
-#                # Command to be run before starting a worker, such as:
-#                # 'module load Anaconda; source activate parsl_env'.
-#                worker_init='module load samtools/1.9; module load bowtie2/2.3; module load bedtools/2.29.0',
-#                launcher=SrunLauncher(),
-#            ),
-#        ),
         HighThroughputExecutor(
             label="sdumont_htex_cpu_dev",
             address=address_by_hostname(),
