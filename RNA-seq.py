@@ -72,7 +72,7 @@ dir_splited = list()
 # PICARD
 for p in sort_apps:
     prefix = str(Path(Path(p.outputs[0].filename).stem).stem)
-    split_files_dir = '{}/{}_splited/'.format(dir_outputs, prefix)#dir_outputs + '/' + prefix + '_splited/'
+    split_files_dir = '{}/{}_splited/'.format(dir_outputs, prefix)
     dir_splited.append(split_files_dir)
     stderr_split = '{}/stderr/{}.picard'.format(dir_outputs, prefix)
     split_apps.append(picard_split(picard_path_file, p.outputs[0], split_files_dir, multithread, prefix, stderr=stderr_split))
@@ -88,7 +88,7 @@ for l in split_apps:
     htseq_apps.append(htSeq_count(gtf, diretorio, multithread, inputs=[l], outputs=[File(saida_htseq)], stderr = stderr_htseq))
 
 # HTSeq-Merge
-for m in htseq_files:
+for m in htseq_apps:
     prefix = Path(m.outputs[0].filename).stem
     output_merge = '{}/{}.merge.count'.format(dir_outputs, prefix)
     stderr_merge = '{}/stderr/{}.merge_htseq'.format(dir_outputs, prefix)
