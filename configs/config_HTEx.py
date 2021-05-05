@@ -16,7 +16,7 @@ config = Config(
             cores_per_worker=24, # number of cores used by one task
             max_workers=24, # number of cores per node           
             provider=SlurmProvider(
-                partition='cpu_small',
+                partition='nvidia_long',
                 nodes_per_block=6, # number of nodes
                 cmd_timeout = 120, # duration for which the provider will wait for a command to be invoked on a remote system
                 init_blocks=1,
@@ -25,9 +25,9 @@ config = Config(
                 min_blocks=1,
                 parallelism=1,
                 move_files=False,
-                scheduler_options = '#SBATCH -J HTEX\n',
-                walltime='01:15:00',
-                worker_init='module load bowtie2/2.3\nmodule load python/3.8.2\nmodule load R/3.5.2_openmpi_2.0_gnu\n'
+                scheduler_options = '#SBATCH -J WfRNAseq\n',
+                walltime='01:00:00',
+                worker_init='module load bowtie2/2.3\nmodule load samtools/1.10_gnu\nmodule load python/3.8.2\nmodule load java/jdk-8u201\nmodule load R/3.5.2_openmpi_2.0_gnu\n'
             ),
             #storage_access=default_staging,
         ),
