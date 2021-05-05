@@ -31,8 +31,8 @@ def htSeq_count(gtf, diretorio, n_splited_files, inputs=[], outputs=[], stderr=N
     return 'htseq-count --stranded reverse --type=exon --idattr=gene_id --mode=union --nprocesses={0} -c {1} {2} {3}'.format(n_splited_files, outputs[0], bigstr, gtf)
 
 @bash_app
-def HTSeq_Merge(merge_path, inputs=[], outputs=[], stderr=None):
-    return 'python3 {0} {1} {2}'.format(merge_path, inputs[0], outputs[0])
+def HTSeq_Merge(merge_path, n_colummns, inputs=[], outputs=[], stderr=None):
+    return 'python3 {0} {1} {2}'.format(merge_path, inputs[0], outputs[0], n_colummns)
 
 @bash_app
 def DESeq(scriptR, pathInputs, inputs=[], outputs=[], stdout = None, stderr=None):
@@ -92,7 +92,7 @@ for m in htseq_apps:
     prefix = Path(m.outputs[0].filename).stem
     output_merge = '{}/{}.merge.count'.format(dir_outputs, prefix)
     stderr_merge = '{}/stderr/{}.merge_htseq'.format(dir_outputs, prefix)
-    merge_apps.append(HTSeq_Merge(merge_path, inputs=[m.outputs[0]], outputs=[File(output_merge)], stderr = stderr_merge))
+    merge_apps.append(HTSeq_Merge(merge_path, inputs=[m.outputs[0]], outputs=[File(output_merge)], multithread, stderr = stderr_merge))
 
 [j.result() for j in merge_apps]
 
