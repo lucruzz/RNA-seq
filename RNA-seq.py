@@ -30,9 +30,31 @@ def htSeq_count(gtf, diretorio, nprocesses, inputs=[], outputs=[], stderr=None):
     bigstr = ' '.join(all_files)
     return 'htseq-count --stranded reverse --type=exon --idattr=gene_id --mode=union --nprocesses={0} -c {1} {2} {3}'.format(nprocesses, outputs[0], bigstr, gtf)
 
-@bash_app
-def HTSeq_Merge(merge_path, n_colummns, inputs=[], outputs=[], stderr=None):
-    return 'python3 {0} {1} {2} {3}'.format(merge_path, inputs[0], outputs[0], n_colummns)
+@python_app
+def HTSeq_Merge(n_colummns, inputs=[], outputs=[], stderr=None):
+    
+    # Script pega a saída partida do HTSeq com N partes e une em 2 colunas. Basicamente, ele vai somar as leituras já mapeadas pelo HTSeq
+    import sys
+
+    file_name_in = inputs[0]
+    file_name_out = outputs[0]
+    n_colummns = int(n_colummns)
+
+    HTSeq_file = open(file_name_in, "r")
+    HTSeq_new_file = open(file_name_out, "w")
+
+    n_colummns += 1
+
+    for linha in HTSeq_file:
+        soma = 0
+        valores = linha.split()
+        for i in range(1, n_colummns):
+            soma = int(valores[i]) + soma 
+        a = valores[0] + '\t' + str(soma) + '\n'
+        HTSeq_new_file.write(a)
+
+    HTSeq_file.close()
+    HTSeq_new_file.close()
 
 @bash_app
 def DESeq(scriptR, pathInputs, inputs=[], outputs=[], stdout = None, stderr=None):
@@ -45,7 +67,6 @@ dir_outputs = sys.argv[4]
 gtf = sys.argv[5]
 script_DESeq2 = sys.argv[6]
 picard_path_file = sys.argv[7]
-merge_path = sys.argv[8]
 
 p = Path(inputs_bowtie)
 fasta = list(p.glob('*'))
@@ -92,7 +113,7 @@ for m in htseq_futures:
     prefix = Path(m.outputs[0].filename).stem
     output_merge = '{}/{}.merge.count'.format(dir_outputs, prefix)
     stderr_merge = '{}/stderr/{}.merge_htseq'.format(dir_outputs, prefix)
-    merge_futures.append(HTSeq_Merge(merge_path, multithread, inputs=[m.outputs[0]], outputs=[File(output_merge)], stderr = stderr_merge))
+    merge_futures.append(HTSeq_Merge(multithread, inputs=[m.outputs[0]], outputs=[File(output_merge)], stderr = stderr_merge))
 
 # Waiting for all apps to proceed with the execution of the last activity (DESeq)
 [j.result() for j in merge_futures]
