@@ -32,8 +32,7 @@ def htSeq_count(gtf, diretorio, nprocesses, inputs=[], outputs=[], stderr=None):
 
 @python_app
 def HTSeq_Merge(n_colummns, inputs=[], outputs=[], stderr=None):
-    
-    # Script pega a saída partida do HTSeq com N partes e une em 2 colunas. Basicamente, ele vai somar as leituras já mapeadas pelo HTSeq
+
     import sys
 
     file_name_in = inputs[0]
