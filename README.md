@@ -15,6 +15,14 @@ Or
 
 > sudo yum install bowtie2-2.3.5-linux-x86_64
 
+- [Samtools](http://www.htslib.org/)
+
+Samtools is a suite of programs for interacting with high-throughput sequencing data.
+
+- [Picard](https://github.com/broadinstitute/picard)
+
+Picard is a set of Java command line tools for manipulating high-throughput sequencing (HTS) data and formats.
+
 - [HTSeq](https://htseq.readthedocs.io/en/master/)
 
 HTSeq is a native Python library that folows conventions of many Python packages. You can install it by running:
@@ -56,6 +64,4 @@ First of all, make a Comma Separated Values (CSV) file. So, onto the first line 
 
 The list of command line arguments passed to Python script, beyond the script's name, must be: the indexed genome, the threads' number for bowtie task, read fastaq file, directory's name where the output files must be placed,  GTF file and lastly the DESeq script. Make sure all the files necessary to run the workflow are in the same directory and the fastaq files in a dedicated folder, as a input directory. The command line will be like this:
 
-> python3 rna-seq.py ../mm9/mm9 6 ../inputs/SRR ../outputs ../Mus_musculus.NCBIM37.67.gtf ../DESeq.R
-
-On this first version the workflow search, on the input files' directory, for a pattern on the prefix in the files' name. So, for running this workflow you need pass this pattern. In the table, as you can see, the pattern is ``"SRR"``.
+> python3 rna-seq.py ../mm9/mm9 6 ../inputs/ ../outputs ../Mus_musculus.NCBIM37.67.gtf ../DESeq.R
