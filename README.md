@@ -1,6 +1,8 @@
 # RNA-seq Scientific Workflow
 Workflow for RNA sequencing using the Parallel Scripting Library - Parsl.
 
+**Reference:** Cruz, L., Coelho, M., Terra, R., Carvalho, D., Gadelha, L., Osthoff, C., & Ocaña, K. (2021). *Workflows* Científicos de RNA-Seq em Ambientes Distribuídos de Alto Desempenho: Otimização de Desempenho e Análises de Dados de Expressão Diferencial de Genes. In *Anais do XV Brazilian e-Science Workshop*, p. 57-64. Porto Alegre: SBC. DOI: https://doi.org/10.5753/bresci.2021.15789
+
 ## Requirements
 
 In order to use RNA-seq Workflow the following tools must be available:
