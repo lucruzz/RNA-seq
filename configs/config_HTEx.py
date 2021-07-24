@@ -27,7 +27,7 @@ config = Config(
                 move_files=False,
                 scheduler_options = '#SBATCH -J WfRNAseq\n',
                 walltime='01:00:00',
-                worker_init='module load bowtie2/2.3\nmodule load samtools/1.10_gnu\nmodule load python/3.8.2\nmodule load java/jdk-8u201\nmodule load R/3.5.2_openmpi_2.0_gnu\n'
+                worker_init='module load picard/2.18\nmodule load bowtie2/2.3\nmodule load samtools/1.10_gnu\nmodule load python/3.8.2\nmodule load java/jdk-8u201\nmodule load R/3.5.2_openmpi_2.0_gnu\n'
             ),
             #storage_access=default_staging,
         ),
