@@ -9,18 +9,18 @@ from pathlib import Path
 load(config)
 
 @bash_app
-def bowtie(multithreads_parameter, base, infile, outputs=[], stderr=None):
-    return 'bowtie2 -p {0} -x {1} -U {2} -S {3}'.format(multithreads_parameter, base, infile, outputs[0])
+def bowtie(multithread_parameter, base, infile, outputs=[], stderr=None):
+    return 'bowtie2 -p {0} -x {1} -U {2} -S {3}'.format(multithread_parameter, base, infile, outputs[0])
 
 @bash_app
-def sort(multithreads_parameter, inputs=[], outputs=[], stderr=None):
-   return 'samtools sort -@ {0} -o {1} {2}'.format(multithreads_parameter, outputs[0], inputs[0])
+def sort(multithread_parameter, inputs=[], outputs=[], stderr=None):
+   return 'samtools sort -@ {0} -o {1} {2}'.format(multithread_parameter, outputs[0], inputs[0])
 
 @bash_app
-def picard_split(picard_path, infile, output_dir, split_to_n_files, prefix, inputs=[], outputs=[], stdout=None, stderr=None):
+def picard_split(infile, output_dir, split_to_n_files, prefix, inputs=[], outputs=[], stdout=None, stderr=None):
     import os
     os.mkdir(output_dir)
-    return 'java -jar {} SplitSamByNumberOfReads I={} OUTPUT={} SPLIT_TO_N_FILES={} CREATE_INDEX=true OUT_PREFIX={}'.format(picard_path, infile, output_dir, split_to_n_files, prefix)
+    return 'java -jar $PICARD SplitSamByNumberOfReads I={} OUTPUT={} SPLIT_TO_N_FILES={} CREATE_INDEX=true OUT_PREFIX={}'.format(infile, output_dir, split_to_n_files, prefix)
 
 @bash_app
 def htSeq_count(gtf, diretorio, nprocesses, inputs=[], outputs=[], stderr=None):
@@ -47,7 +47,7 @@ def HTSeq_Merge(n_colummns, inputs=[], outputs=[], stderr=None):
     for linha in HTSeq_file:
         soma = 0
         valores = linha.split()
-        for i in range(1, n_colummns):
+        for i in range(1,n_colummns):
             soma = int(valores[i]) + soma 
         a = valores[0] + '\t' + str(soma) + '\n'
         HTSeq_new_file.write(a)
@@ -65,7 +65,6 @@ inputs_bowtie = sys.argv[3]
 dir_outputs = sys.argv[4]
 gtf = sys.argv[5]
 script_DESeq2 = sys.argv[6]
-picard_path_file = sys.argv[7]
 
 p = Path(inputs_bowtie)
 fasta = list(p.glob('*'))
@@ -92,10 +91,10 @@ dir_splited = list()
 # PICARD
 for p in sort_futures:
     prefix = str(Path(Path(p.outputs[0].filename).stem).stem)
-    split_files_dir = '{}/{}_splited/'.format(dir_outputs, prefix) # dir_outputs + '/' + prefix + '_splited/'
+    split_files_dir = '{}/{}_splited/'.format(dir_outputs, prefix)
     dir_splited.append(split_files_dir)
     stderr_split = '{}/stderr/{}.picard'.format(dir_outputs, prefix)
-    split_futures.append(picard_split(picard_path_file, p.outputs[0], split_files_dir, multithread, prefix, stderr=stderr_split))
+    split_futures.append(picard_split(p.outputs[0], split_files_dir, multithread, prefix, stderr=stderr_split))
 
 dir_splited.reverse()
 
