@@ -57,12 +57,12 @@ First of all, make a Comma Separated Values (CSV) file. So, onto the first line 
 
    |    sampleName    |     fileName     |condition|
    |------------------|------------------|---------|
-   | tissue control 1 | SRR5445794.fastq | control |
-   | tissue control 2 | SRR5445795.fastq | control |
-   | tissue control 3 | SRR5445796.fastq | control |
-   | tissue wntup 1   | SRR5445797.fastq | wntup   |
-   | tissue wntup 2   | SRR5445798.fastq | wntup   |
-   | tissue wntup 3   | SRR5445799.fastq | wntup   |
+   | tissue control 1 | SRR5445794.merge.count | control |
+   | tissue control 2 | SRR5445795.merge.count | control |
+   | tissue control 3 | SRR5445796.merge.count | control |
+   | tissue wntup 1   | SRR5445797.merge.count | wntup   |
+   | tissue wntup 2   | SRR5445798.merge.count | wntup   |
+   | tissue wntup 3   | SRR5445799.merge.count | wntup   |
 
 The list of command line arguments passed to Python script, beyond the script's name, must be: the indexed genome; the threads' number for bowtie task, sort task, number of splitted files for split_picard task and number of CPU running in htseq task; path to read fastaq file, which is the path of the input files; directory's name where the output files must be placed;  GTF file; and, lastly the DESeq script. Make sure all the files necessary to run the workflow are in the same directory and the fastaq files in a dedicated folder, as a input directory. The command line will be like this:
 
