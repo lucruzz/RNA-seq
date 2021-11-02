@@ -64,6 +64,14 @@ First of all, make a Comma Separated Values (CSV) file. So, onto the first line 
    | tissue wntup 2   | SRR5445798.merge.count | wntup   |
    | tissue wntup 3   | SRR5445799.merge.count | wntup   |
 
-The list of command line arguments passed to Python script, beyond the script's name, must be: the indexed genome; the threads' number for bowtie task, sort task, number of splitted files for split_picard task and number of CPU running in htseq task; path to read fastaq file, which is the path of the input files; directory's name where the output files must be placed;  GTF file; and, lastly the DESeq script. Make sure all the files necessary to run the workflow are in the same directory and the fastaq files in a dedicated folder, as a input directory. The command line will be like this:
+The list of command line arguments passed to Python script, beyond the script's name, must be: 
+
+ 1. The indexed genome; 
+ 2. The number of threads for bowtie task, sort task, number of splitted files for split_picard task and number of CPU running in htseq task; 
+ 3. Path to read fastaq file, which is the path of the input files; 
+ 4. Directory's name where the output files must be placed;  
+ 5. GTF file; and, lastly the DESeq script. 
+ 
+Make sure all the files necessary to run the workflow are in the same directory and the fastaq files in a dedicated folder, as a input directory. The command line will be like this:
 
 > python3 rna-seq.py ../mm9/mm9 24 ../inputs/ ../outputs ../Mus_musculus.NCBIM37.67.gtf ../DESeq.R
