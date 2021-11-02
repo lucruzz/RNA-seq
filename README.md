@@ -70,8 +70,12 @@ The list of command line arguments passed to Python script, beyond the script's 
  2. The number of threads for bowtie task, sort task, number of splitted files for split_picard task and number of CPU running in htseq task; 
  3. Path to read fastaq file, which is the path of the input files; 
  4. Directory's name where the output files must be placed;  
- 5. GTF file; and, lastly the DESeq script. 
+ 5. GTF file;
+ 7. and, lastly the DESeq script. 
  
 Make sure all the files necessary to run the workflow are in the same directory and the fastaq files in a dedicated folder, as a input directory. The command line will be like this:
 
 > python3 rna-seq.py ../mm9/mm9 24 ../inputs/ ../outputs ../Mus_musculus.NCBIM37.67.gtf ../DESeq.R
+
+**Remember to adjust the parameter multithreaded and multicore according with your computational environment.** 
+Example: If your machine has 8 cores, you should set the parameter on 8.
