@@ -174,7 +174,6 @@ for n in htseq_futures:
     outfile = '{}/{}.merge.count'.format(ssd_outputs_dir, prefix)
     print('OUTPUT: ' + outfile)  # /tmp/rna-seq_ssd/outputs_ssd/SRR5445797.merge.count
     merge_futures.append( htseq_merge( parallel, inputs=[n.outputs[0]], outputs=[File(outfile)] ) )
-
 # Saída no scratch
 # Caminho: /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/ssd-outputs
 out = '/scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/ssd-outputs'
@@ -191,11 +190,6 @@ for p in merge_futures:
 [q.result() for q in scratch_futures]
 
 # DESEQ2
-# saida_DEseq = '{}/teste.deseq'.format(dir_outputs)
-# stderr_DESeq = '{}/stderr/all.deseq'.format(dir_outputs)
-# deseq_future = deseq(File(script_DESeq2), dir_outputs, stdout=saida_DEseq, stderr = stderr_DESeq)
+# saida_DEseq = '{}/teste.deseq'.format(out)
+# deseq_future = deseq(File(script_deseq2), out)
 # deseq_future.result()
-
-
-
-# [k.result() for k in htseq_futures]
