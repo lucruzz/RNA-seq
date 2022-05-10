@@ -8,29 +8,28 @@ from pathlib import Path
 
 load(config)
 
-# Copia os dados do /scratch para o /tmp local
-# 1. cria o diretório inputs no /tmp local do SSD
-# 2. copia UM arquivo de entrada do /scratch para o /tmp local
-# 3. abre o diretório do /tmp local
 @bash_app
 def ssd(ssd_dir, ssd_inputs_dir, ssd_outputs_dir, inputs=[], outputs=[], stderr=None):
     create_directories = 'mkdir {0} ; mkdir {1} ; mkdir {2} ;'.format(ssd_dir, ssd_inputs_dir, ssd_outputs_dir)
-    print(create_directories)
-    open_directory = create_directories + 'cd {} ;'.format(ssd_dir)
+    open_directory = create_directories + 'cd {} ;'.format(ssd_dir) 
     command = open_directory +  'cp {} {} -r ; cp {} {} ; cp {} {} ;'
-    print(command)
     return command.format( inputs[0], outputs[0], inputs[1], outputs[1], inputs[2], outputs[2])
 
+#@python_app
+#def ssd2(ssd_inputs_dir, ssd_outputs_dir, entrada):
+#    import shutil    
+#    shutil.copytree(entrada, ssd_inputs_dir)
+
 @bash_app
-def bowtie(parallel, inputs=[], outputs=[], stderr=None):
-    return 'bowtie2 -p {0} -x {1} -U {2} -S {3}'.format(parallel, inputs[1], inputs[2], outputs[0])
+def bowtie(parallel, inputs=[], outputs=[], stderr=None, stdout=None):
+    return 'bowtie2 -p {0} -x {1}/mm9 -U {2} -S {3}'.format(parallel, inputs[0], inputs[1], outputs[0])
 
 @bash_app
 def sort(parallel, inputs=[], outputs=[], stderr=None):
    return 'samtools sort -@ {0} -o {1} {2}'.format(parallel, outputs[0], inputs[0])
 
 @bash_app
-def split_picard(output_dir, split_to_n_files, prefix, inputs=[], stdout=None, stderr=None):
+def split_picard(output_dir, split_to_n_files, prefix, inputs=[], outputs=[],stdout=None, stderr=None):
     import os
     os.mkdir(output_dir)
     return 'java -jar $PICARD SplitSamByNumberOfReads I={} OUTPUT={} SPLIT_TO_N_FILES={} CREATE_INDEX=true OUT_PREFIX={}'.format(inputs[0], output_dir, split_to_n_files, prefix)
@@ -76,16 +75,16 @@ def scratch(directory, inputs=[], outputs=[], stderr=None):
 
 
 @bash_app
-def deseq(scriptR, pathInputs, inputs=[], outputs=[], stdout = None, stderr=None):
+def deseq2(scriptR, pathInputs, stdout = None, stderr=None):
     return '{0} {1}'.format(scriptR, pathInputs)
 
 
-base = sys.argv[1]      # /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/inputs/mm9/mm9
-parallel = sys.argv[2]
-inputs = sys.argv[3]    # /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/inputs
-outputs = sys.argv[4]   # /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/outputs
-gtf = sys.argv[5]       # /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/inputs/Mus_musculus.NCBIM37.67.gtf
-deseq = sys.argv[6]     # /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/DESeq.R
+base = sys.argv[1]          # /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/inputs/mm9/mm9
+parallel = sys.argv[2]      # 24
+inputs = sys.argv[3]        # /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/inputs
+outputs = sys.argv[4]       # /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/outputs
+gtf = sys.argv[5]           # /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/inputs/Mus_musculus.NCBIM37.67.gtf
+script_deseq2 = sys.argv[6] # /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/DESeq.R
 
 # DIRETORIO SSD
 ssd_dir = '/tmp/rna-seq_ssd/'
@@ -107,19 +106,16 @@ for i in fasta:
     print(copy_base, copy_gtf, copy_input)
     print(base, gtf, str(i))
     infile = str(i)
-    ssd_futures.append( ssd( ssd_dir, ssd_inputs_dir, ssd_outputs_dir, inputs = [ File(base), File(gtf), File(infile) ], outputs=[ File(copy_base), File(copy_gtf), File(copy_input) ] ) )
+    ssd_futures.append(ssd( ssd_dir, 
+                            ssd_inputs_dir, 
+                            ssd_outputs_dir, 
+                            inputs = [ File(base), File(gtf), File(infile) ], 
+                            outputs=[ File(copy_base), File(copy_gtf), File(copy_input) ] ) )
 
 # [k.result() for k in ssd_futures]
 
 # BOWTIE
 for j in ssd_futures:
-    print('FILEPATH: ' + j.outputs[0].filepath)
-    print('FILENAME: ' + j.outputs[0].filename)
-    print('FILEPATH: ' + j.outputs[1].filepath) 
-    print('FILENAME: ' + j.outputs[1].filename)
-    print('FILEPATH: ' + j.outputs[2].filepath)
-    print('FILENAME: ' + j.outputs[2].filename)
-    
     ssd_base = j.outputs[0].filepath + '/mm9' # /tmp/rna-seq_ssd/inputs_ssd/mm9
     ssd_gtf = j.outputs[1].filepath           # /tmp/rna-seq_ssd/inputs_ssd/Mus_musculus.NCBIM37.67.gtf
     ssd_fastq = j.outputs[2].filepath         # /tmp/rna-seq_ssd/inputs_ssd/SRR5445797.fastq.gz
@@ -127,7 +123,7 @@ for j in ssd_futures:
     prefix = Path(Path(j.outputs[2].filename).stem).stem # SRR5445797.fastq.gz -> SRR5445797
     outfile = str(Path(j.outputs[2].filepath).parent.parent) + '/outputs_ssd/' + prefix + '.sam' # /tmp/rna-seq_ssd/outputs_ssd/SRR5445797.sam
     print('OUTPUT: ' + outfile)
-    bowtie_futures.append( bowtie( parallel, inputs=[j, File(ssd_base), File(ssd_fastq)], outputs=[File(outfile)] ) )
+    bowtie_futures.append( bowtie( parallel, inputs=[j.outputs[0], j.outputs[2]], outputs=[File(outfile)] ) )
 
 # [k.result() for k in bowtie_futures]
 
@@ -147,12 +143,29 @@ dir_splited = list()
 
 #PICARD
 for l in sort_futures:
-    print('SPLIT_PICARD: ' + l.outputs[0].filepath)                # /tmp/rna-seq_ssd_outputs_ssd/SRR5445797.sort.bam
-    prefix = Path(Path(l.outputs[0].filename).stem).stem           # SRR5445797
-    split_files_dir = ssd_outputs_dir + '/' + prefix + '_splited/' # /tmp/rna-seq_ssd/outputs_ssd/SRR5445797_splited/
+    print('SPLIT_PICARD: ' + l.outputs[0].filepath)                 # /tmp/rna-seq_ssd_outputs_ssd/SRR5445797.sort.bam
+    prefix = Path(Path(l.outputs[0].filename).stem).stem            # SRR5445797
+    split_files_dir = ssd_outputs_dir + '/' + prefix + '_splitted/' # /tmp/rna-seq_ssd/outputs_ssd/SRR5445797_splited/
     print(split_files_dir)
     dir_splited.append(split_files_dir)
-    split_futures.append( split_picard( split_files_dir, parallel, prefix, inputs=[l.outputs[0]] ) )
+
+    files = list()
+    for i in range(24):
+        base = '000'
+        if i < 9:
+            files.append(split_files_dir + prefix + '_' + base + str(i+1) + '.bam')
+        if i >= 9:
+            files.append(split_files_dir + prefix + '_' + base[1:] + str(i+1) + '.bam')
+
+    print(files)
+    split_futures.append(split_picard( split_files_dir, 
+                                       parallel, 
+                                       prefix, 
+                                       inputs=[l.outputs[0]], 
+                                       outputs=[File(files[0]),File(files[1]), File(files[2]), File(files[3]), File(files[4]), File(files[5]), 
+                                                File(files[6]),File(files[7]), File(files[8]), File(files[9]), File(files[10]), File(files[11]), 
+                                                File(files[12]),File(files[13]), File(files[14]), File(files[15]), File(files[16]), File(files[17]), 
+                                                File(files[18]),File(files[19]), File(files[20]), File(files[21]), File(files[22]), File(files[23])] ) )
 
 # [k.result() for k in split_futures]
 
@@ -167,6 +180,7 @@ for m in split_futures:
     print('OUTPUT: ' + outfile)  # /tmp/rna-seq_ssd/outputs_ssd/SRR5445797.count
     print('GTF: ' + ssd_gtf)     # /tmp/rna-seq_ssd/inputs_ssd/Mus_musculus.NCBIM37.67.gtf
     htseq_futures.append( htseq_count( ssd_gtf, diretorio, parallel, inputs=[m], outputs=[File(outfile)] ) )
+    
 
 # HTSEQ-MERGE
 for n in htseq_futures:
@@ -174,6 +188,7 @@ for n in htseq_futures:
     outfile = '{}/{}.merge.count'.format(ssd_outputs_dir, prefix)
     print('OUTPUT: ' + outfile)  # /tmp/rna-seq_ssd/outputs_ssd/SRR5445797.merge.count
     merge_futures.append( htseq_merge( parallel, inputs=[n.outputs[0]], outputs=[File(outfile)] ) )
+
 # Saída no scratch
 # Caminho: /scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/ssd-outputs
 out = '/scratch/cenapadrjsd/lucas.silva/rna-seq-ssd/ssd-outputs'
@@ -190,6 +205,6 @@ for p in merge_futures:
 [q.result() for q in scratch_futures]
 
 # DESEQ2
-# saida_DEseq = '{}/teste.deseq'.format(out)
-# deseq_future = deseq(File(script_deseq2), out)
-# deseq_future.result()
+#saida_DEseq = '{}/teste.deseq'.format(out)
+#deseq_future = deseq2(File(script_deseq2), out, stdout=saida_DEseq)
+#deseq_future.result()
