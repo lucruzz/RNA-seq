@@ -1,7 +1,7 @@
 # RNA-seq Scientific Workflow
 Workflow for RNA sequencing using the Parallel Scripting Library - Parsl.
 
-# Running the workflow using SSD
+# Running the workflow
 
 **1. First step:** 
 
