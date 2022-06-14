@@ -1,0 +1,24 @@
+#!/bin/bash
+
+HOMEDIR=$(pwd)
+PARTITION1=cpu_dev
+PARTITION2=nvidia_dev
+PARTITION3=nvidia_small
+
+cd $HOMEDIR/94
+./94.sh $PARTITION1
+
+cd $HOMEDIR/95
+./95.sh $PARTITION3
+
+cd $HOMEDIR/96
+./96.sh $PARTITION3
+
+cd $HOMEDIR/97
+./97.sh $PARTITION2
+
+cd $HOMEDIR/98
+./98.sh $PARTITION3
+
+cd $HOMEDIR/99
+./99.sh $PARTITION3
