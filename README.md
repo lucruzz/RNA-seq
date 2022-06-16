@@ -11,6 +11,6 @@ Workflow for RNA sequencing using the Parallel Scripting Library - Parsl.
 
    Set the JOBs variables with the ID of the jobs that are running.
    
-**4. Third step:**
+**3. Third step:**
 
    sbatch --dependency=after:$JOB1,$JOB2,$JOB3,$JOB4,$JOB5,$JOB6 dep.sh
