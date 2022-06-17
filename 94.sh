@@ -3,7 +3,7 @@
 # Carrega o modulo
 module load python/3.8.2
 
-DIR=/scratch/cenapadrjsd/lucas.silva/rna-seq-ssd
+DIR=$SCRATCH/rna-seq-ssd
 
 SCRIPT=$DIR/alpha.py
 BASE_GENOMICA=$DIR/inputs/mm9
