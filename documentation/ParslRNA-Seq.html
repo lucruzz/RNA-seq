@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParslRNA-Seq</title>
+</head>
+<body>
+    <h1>Passo a passo para executar o ParslRNA-Seq</h1>
+    <hr>
+    <h3>Para usuários do SDumont</h3>
+    <hr>
+
+    <p> 
+        1. Antes de qualquer coisa, certifique-se de ter os arquivos necessários para execução todos no diretório de trabalho de execução. São eles: <br>
+        <br>
+        1. Arquivo GTF;<br>
+        2. Base genômica (mm9);<br>
+        3. Script do DESeq; <br>
+        4. Arquivos fastq.gz no diretório inputs/. <br>
+        5. Tabela CSV. <br>
+        <br>
+
+        <img src="img/arquivos-para-execucao.png" alt="Arquivos necessários para executar o ParslRNA-Seq.">
+        <br>
+        <hr>
+        2. Agora carregue o módulo do python:
+        <br>
+        <br>
+        $ module load python/3.8.2
+        <br>
+        <br>
+        <hr>
+        3. Verifique o arquivo de configuração confightex.py no diretório configs/. <br>
+
+        Verifique a quantidade de nós (nodes_per_block), o tempo máximo do job (walltime) e a fila de execução (partition). <br>
+        
+        <br>
+        <br>
+        <hr>
+        4. Verifique a tabela CSV. <br>
+
+        <hr>
+
+
+        5. Por fim, execute o workflow rodando o seguinte comando: <br>
+    
+        $ nohup python3 path/to/rna-seq.py path/to/mm9/mm9 24 path/to/inputs/ path/to/outputs path/to/Mus_musculus.NCBIM37.67.gtf path/to/DESeq.R & <br>
+        <br>
+
+        É possível criar um bash script para facilitar a executção do python RNA-Seq. O Script está disponível no <a href="https://github.com/lucruzz/RNA-seq/blob/master/execution.sh">GitHub</a>.
+        <br>
+        <br>
+        Lembre-se de executar o comando de permissão de execução para o script bash: <br>
+        $ chmod 777 execution.sh
+        <br>
+        <br>
+        Depois é só executar o seguinte comando: <br>
+
+        $ ./execution.sh
+
+
+
+        
+    
+
+
+
+
+
+    </p>
+</body>
+</html>
