@@ -7,7 +7,7 @@ Workflow for RNA sequencing using the Parallel Scripting Library - Parsl.
 
 In order to use RNA-seq Workflow the following tools must be available:
 
-- [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+- [Bowtie2, version 2.3](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
 
 You can install Bowtie2 by running:
 
@@ -17,15 +17,15 @@ Or
 
 > sudo yum install bowtie2-2.3.5-linux-x86_64
 
-- [Samtools](http://www.htslib.org/)
+- [Samtools, version ](http://www.htslib.org/)
 
 Samtools is a suite of programs for interacting with high-throughput sequencing data.
 
-- [Picard](https://github.com/broadinstitute/picard)
+- [Picard, version 2.18](https://github.com/broadinstitute/picard)
 
 Picard is a set of Java command line tools for manipulating high-throughput sequencing (HTS) data and formats.
 
-- [HTSeq](https://htseq.readthedocs.io/en/master/)
+- [HTSeq, version 0.13.5](https://htseq.readthedocs.io/en/master/)
 
 HTSeq is a native Python library that folows conventions of many Python packages. You can install it by running:
 
@@ -33,7 +33,7 @@ HTSeq is a native Python library that folows conventions of many Python packages
 
 HTSeq uses [NumPy](https://numpy.org/), [Pysam](https://github.com/pysam-developers/pysam) and [matplotlib](https://matplotlib.org/). Be sure this tools are installed.
 
-- [R](https://www.r-project.org/)
+- [R, version 3.5.2](https://www.r-project.org/)
 
 To use [DESEq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) script make sure R language is also installed. You can install it by running:
 
@@ -49,7 +49,7 @@ The recommended way to install Parsl is the suggest approach from Parsl's docume
 
 - [Python (version >= 3.5)](https://www.python.org/)
 
-To use Parsl, you need Python 3.5 or above. You also need Python to use HTSeq, so you should load only one Python version.
+To use Parsl, you need Python 3.5 or above (**3.8.2 is prefered**). You also need Python to use HTSeq, so you should load only one Python version.
 
 ## Workflow invocation
 
