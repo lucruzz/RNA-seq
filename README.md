@@ -17,7 +17,7 @@ Or
 
 > sudo yum install bowtie2-2.3.5-linux-x86_64
 
-- [Samtools, version ](http://www.htslib.org/)
+- [Samtools, version 1.10](http://www.htslib.org/)
 
 Samtools is a suite of programs for interacting with high-throughput sequencing data.
 
